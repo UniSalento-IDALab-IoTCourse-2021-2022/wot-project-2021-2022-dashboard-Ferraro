@@ -1,0 +1,13 @@
+<div class="mapcontainer">
+    <table>
+        <tr *ngFor="let i of y_idxs">
+            <td *ngFor="let j of x_idxs">
+                <div #tooltip="matTooltip"
+                matTooltip="element {{i}}, {{j}}"
+                class="square"></div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div *ngFor="let rec of WebsocketService.received">{{rec}}</div>
+
