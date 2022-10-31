@@ -2,6 +2,28 @@
     height: 15px;
     width: 15px;
     background-color: white;
+    border: 0px; 
+}
+
+.whitesquare{
+    height: 15px;
+    width: 15px;
+    background-color: white;
+    border: 0px;
+}
+
+.redsquare{
+    height: 15px;
+    width: 15px;
+    background-color: red;
+    border: 0px; 
+}
+
+.yellowsquare{
+    height: 15px;
+    width: 15px;
+    background-color: yellowgreen;
+    border: 0px; 
 }
 
 table{
@@ -18,3 +40,7 @@ td{
     max-height: 70%;
     overflow:scroll;
 }
+
+::ng-deep .mat-tooltip  {
+    white-space: pre-line !important;
+  }

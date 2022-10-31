@@ -2,12 +2,16 @@
     <table>
         <tr *ngFor="let i of y_idxs">
             <td *ngFor="let j of x_idxs">
-                <div #tooltip="matTooltip"
-                matTooltip="element {{i}}, {{j}}"
-                class="square"></div>
+                <div [ngClass]="{
+                    'redsquare': nodes_positions.includes('[' + j.toString() + ', ' + i.toString() + ']'),
+                    'whitesquare': nodes_positions.includes('[' + j.toString() + ', ' + i.toString() + ']') == false,
+                    'yellowsquare': tracked_positions.includes('[' + j.toString() + ', ' + i.toString() + ']')
+                }"
+                #tooltip="matTooltip"
+                [matTooltip]="nodes_positions.includes('[' + j.toString() + ', ' + i.toString() + ']') ? nodes[nodes_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')] : (tracked_positions.includes('[' + j.toString() + ', ' + i.toString() + ']') ? tracked_devices[tracked_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')] : j.toString()+', '+i.toString())"></div>
             </td>
         </tr>
     </table>
 </div>
-<div *ngFor="let rec of WebsocketService.received">{{rec}}</div>
+<div *ngFor="let rec of WebsocketService.received.slice(0,9)">{{rec}}</div>
 

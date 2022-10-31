@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { EventEmitter, Injectable } from "@angular/core";
 
 @Injectable({
     providedIn: "root"
@@ -6,6 +6,8 @@ import { Injectable } from "@angular/core";
 export class WebsocketService{
     webSocket: WebSocket;
     received: String[] = [];
+    received_emitter: EventEmitter<any> = new EventEmitter()
+
     constructor(){}
 
     public openWebSocket(){
@@ -16,8 +18,8 @@ export class WebsocketService{
         };
 
         this.webSocket.onmessage = (event) => {
-            this.received.push(event.data);
-            console.log(event.data);
+            this.received.unshift(event.data);
+            this.received_emitter.emit();
         };
         
         this.webSocket.onclose = (event) => {
