@@ -5,7 +5,9 @@
                 <div [ngClass]="{
                     'redsquare': nodes_positions.includes('[' + j.toString() + ', ' + i.toString() + ']'),
                     'whitesquare': nodes_positions.includes('[' + j.toString() + ', ' + i.toString() + ']') == false,
-                    'yellowsquare': tracked_positions.includes('[' + j.toString() + ', ' + i.toString() + ']')
+                    'yellowsquare': tracked_positions.includes('[' + j.toString() + ', ' + i.toString() + ']'),
+                    'orangesquare': (sensor_values[nodes_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')] !== undefined) &&
+                    (sensor_values[nodes_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')] !== '')
                 }"
                 #tooltip="matTooltip"
                 [matTooltip]="(nodes_positions.includes('[' + j.toString() + ', ' + i.toString() + ']') ? (nodes[nodes_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')]) + ((sensor_values[nodes_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')] !== '') ? '
@@ -15,8 +17,7 @@
         </tr>
     </table>
 </div>
-<div *ngFor="let rec of WebsocketService.received.slice(0,9)">{{rec}}</div>
-
-<!--
-    [matTooltip]="(sensor_values[nodes_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')]) !== '' ? sensor_values[nodes_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')] : ''"
--->
+<div>
+    <h4>Last messages:</h4>
+</div>
+<div *ngFor="let rec of WebsocketService.received.slice(0,3)">{{rec}}</div>

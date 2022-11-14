@@ -26,6 +26,13 @@
     border: 0px; 
 }
 
+.orangesquare{
+    height: 15px;
+    width: 15px;
+    background-color: orange;
+    border: 0px; 
+}
+
 table{
     border-collapse: collapse;
 }
