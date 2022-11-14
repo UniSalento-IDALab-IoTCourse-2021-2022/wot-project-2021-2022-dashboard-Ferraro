@@ -8,10 +8,15 @@
                     'yellowsquare': tracked_positions.includes('[' + j.toString() + ', ' + i.toString() + ']')
                 }"
                 #tooltip="matTooltip"
-                [matTooltip]="nodes_positions.includes('[' + j.toString() + ', ' + i.toString() + ']') ? nodes[nodes_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')] : (tracked_positions.includes('[' + j.toString() + ', ' + i.toString() + ']') ? tracked_devices[tracked_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')] : j.toString()+', '+i.toString())"></div>
+                [matTooltip]="(nodes_positions.includes('[' + j.toString() + ', ' + i.toString() + ']') ? (nodes[nodes_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')]) + ((sensor_values[nodes_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')] !== '') ? '
+                temperature: ' +
+                (sensor_values[nodes_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')]) : '') : (tracked_positions.includes('[' + j.toString() + ', ' + i.toString() + ']') ? tracked_devices[tracked_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')] : ''))"></div>
             </td>
         </tr>
     </table>
 </div>
 <div *ngFor="let rec of WebsocketService.received.slice(0,9)">{{rec}}</div>
 
+<!--
+    [matTooltip]="(sensor_values[nodes_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')]) !== '' ? sensor_values[nodes_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')] : ''"
+-->

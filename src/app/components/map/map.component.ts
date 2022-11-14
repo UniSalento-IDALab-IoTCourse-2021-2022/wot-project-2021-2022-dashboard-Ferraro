@@ -18,8 +18,9 @@ export class MapComponent implements OnInit, OnDestroy {
   dim_y = 50 // number of cells in the y axis
   x_idxs = Array.from(Array(this.dim_x).keys())//This is needed only for using angular directives in generating map
   y_idxs = Array.from(Array(this.dim_y).keys())//This is needed only for using angular directives in generating map
-  nodes = ["0xb1", "0xb2", "0xb0"]
-  nodes_positions = ["[13, 4]", "[13, 19]", "[40, 4]"]
+  nodes = ["0xb1", "0xb2", "0xb8", "0xb9"]
+  sensor_values = ["", "", "", ""]
+  nodes_positions = ["[13, 4]", "[13, 19]", "[40, 4]", "[40, 4]"]
   tracked_positions:any[] = [] //This array will contain the positions on the map for the tracked devices
   tracked_devices:any[] = [] //This array will contain tracked devices
   is_found = false
@@ -80,17 +81,15 @@ export class MapComponent implements OnInit, OnDestroy {
         return 0;
       })
 
-      if(best_nodes.lenght < 3){
-        continue
-      }
       //take the 3 nearest nodes
       best_nodes = best_nodes.slice(0, 3)
 
       for(let node of best_nodes){
         node.rssi = Math.ceil(node.rssi * 4)
       }
-
-      result.push([elem.address, best_nodes])
+      if(best_nodes.length === 3){
+        result.push([elem.address, best_nodes])
+      }
 
     }
     return result
@@ -98,10 +97,34 @@ export class MapComponent implements OnInit, OnDestroy {
 
   //After findindig three neares neighbors, let's convert their value to points in the map for the corresponding arrays
   track_points(){
+
+    if(JSON.parse(this.WebsocketService.received[0].toString())[0].node !== undefined){
+      let nodes_list = JSON.parse(this.WebsocketService.received[0].toString())
+      for(let elem of nodes_list){
+        for(let elem1 of this.nodes){
+          if(elem1 === elem.node){
+            //this.sensor_values[this.nodes.indexOf(elem1)] = elem.value.toString();
+            let temp = this.nodes_positions[this.nodes.indexOf(elem1)];
+            console.log(temp)
+            for (let place of this.nodes_positions){
+              if(place === temp){
+                this.sensor_values[this.nodes_positions.indexOf(place)] = elem.value.toString()
+              }
+            }
+          }else{
+            this.sensor_values[this.nodes.indexOf(elem1)] = "";
+          }
+        }
+        
+      }
+      return
+    }
+
     console.log("tracking")
     var raw = this.find_nearest_nodes()
+    console.log(raw)
 
-    if(raw === undefined){
+    if(raw === undefined || raw.length === 0){
       return 0;
     }
 
