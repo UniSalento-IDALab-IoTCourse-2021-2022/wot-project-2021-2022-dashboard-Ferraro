@@ -10,6 +10,7 @@
                     (sensor_values[nodes_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')] !== '')
                 }"
                 #tooltip="matTooltip"
+                [matTooltip]="tracked_positions.includes('[' + j.toString() + ', ' + i.toString() + ']') ? tracked_devices[tracked_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')] : ''"
                 [matTooltip]="(nodes_positions.includes('[' + j.toString() + ', ' + i.toString() + ']') ? (nodes[nodes_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')]) + ((sensor_values[nodes_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')] !== '') ? '
                 temperature: ' +
                 (sensor_values[nodes_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')]) : '') : (tracked_positions.includes('[' + j.toString() + ', ' + i.toString() + ']') ? tracked_devices[tracked_positions.indexOf('[' + j.toString() + ', ' + i.toString() + ']')] : ''))"></div>
@@ -21,3 +22,17 @@
     <h4>Last messages:</h4>
 </div>
 <div *ngFor="let rec of WebsocketService.received.slice(0,3)">{{rec}}</div>
+<div>
+    <h4>
+        Stats:
+    </h4>
+</div>
+<div>
+    <p *ngIf="last_overall !== 0">Last message received: {{last_overall | date: 'short'}}</p>
+    <p *ngIf="last_node_msg_dates.length >= 1">Last location message: {{last_node_msg_dates[0] | date: 'short'}}</p>
+    <p *ngIf="last_sensor_msg_dates.length >= 1">Last telemetry message: {{last_sensor_msg_dates[0] | date: 'short'}}</p>
+    <p *ngIf="last_node_msg_dates.length >= 5">Average location message time required: {{avgTimeCount(last_node_msg_dates.slice(0,5))}}</p>
+    <p *ngIf="last_sensor_msg_dates.length >= 5">Average telemetry message time required: {{avgTimeCount(last_sensor_msg_dates.slice(0,5))}}</p>
+    <p>{{tracked_devices}}</p>
+    <p>{{tracked_positions}}</p>
+</div>

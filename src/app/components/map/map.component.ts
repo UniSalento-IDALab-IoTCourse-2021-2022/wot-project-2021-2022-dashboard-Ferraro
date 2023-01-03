@@ -25,6 +25,10 @@ export class MapComponent implements OnInit, OnDestroy {
   tracked_devices:any[] = [] //This array will contain tracked devices
   is_found = false
 
+  last_node_msg_dates: number[] = []
+  last_sensor_msg_dates: number[] = []
+  last_overall:number = 0
+
 
 
 
@@ -98,7 +102,10 @@ export class MapComponent implements OnInit, OnDestroy {
   //After findindig three neares neighbors, let's convert their value to points in the map for the corresponding arrays
   track_points(){
 
+    this.last_overall = Date.now()
+
     if(JSON.parse(this.WebsocketService.received[0].toString())[0].node !== undefined){
+      this.last_sensor_msg_dates.unshift(Date.now())
       let nodes_list = JSON.parse(this.WebsocketService.received[0].toString())
       for(let elem of nodes_list){
         for(let elem1 of this.nodes){
@@ -120,6 +127,7 @@ export class MapComponent implements OnInit, OnDestroy {
       return
     }
 
+    this.last_node_msg_dates.unshift(Date.now())
     console.log("tracking")
     var raw = this.find_nearest_nodes()
     console.log(raw)
@@ -131,7 +139,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.tracked_devices = []
     this.tracked_positions = []
     for(let elem of raw){
-      this.tracked_devices.push(elem.address);
+      this.tracked_devices.push(elem[0]);
       var position = this.calculate_position(JSON.parse(this.nodes_positions[this.nodes.indexOf(elem[1][0].node)])[0],
       JSON.parse(this.nodes_positions[this.nodes.indexOf(elem[1][1].node)])[0],
       JSON.parse(this.nodes_positions[this.nodes.indexOf(elem[1][2].node)])[0],
@@ -143,7 +151,7 @@ export class MapComponent implements OnInit, OnDestroy {
       elem[1][2].rssi
       );
 
-      this.tracked_devices.push(elem.address);
+      //this.tracked_devices.push(elem.address);
       if(position[0] < 0 ){
         position[0] = 0
       }
@@ -157,6 +165,15 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     return 1
+  }
+
+  //average time function counter
+  avgTimeCount(values: number[]): number{
+    let accumulator = 0
+    for(let i=0; i<(values.length-1); i++){
+      accumulator += Math.floor((values[i] - values[i+1])/1000) //we are not interested in milliseconds
+    }
+    return (accumulator/(values.length-1))
   }
 
 
