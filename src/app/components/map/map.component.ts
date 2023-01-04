@@ -12,7 +12,8 @@ import { WebsocketService } from 'src/app/services/websocket.service';
 
 export class MapComponent implements OnInit, OnDestroy {
 
-  //rememnber 1 square on the map, 25 centimeters.
+  //remember 1 square on the map, 25 centimeters.
+  SQUARES_PER_METER = 4
 
   dim_x = 100 // number of cells in the x axis
   dim_y = 50 // number of cells in the y axis
@@ -91,7 +92,7 @@ export class MapComponent implements OnInit, OnDestroy {
       best_nodes = best_nodes.slice(0, 3)
 
       for(let node of best_nodes){
-        node.rssi = Math.ceil(node.rssi * 4)
+        node.rssi = Math.ceil(node.rssi * this.SQUARES_PER_METER)
       }
       if(best_nodes.length === 3){
         result.push([elem.address, best_nodes])
@@ -112,7 +113,6 @@ export class MapComponent implements OnInit, OnDestroy {
       for(let elem of nodes_list){
         for(let elem1 of this.nodes){
           if(elem1 === elem.node){
-            //this.sensor_values[this.nodes.indexOf(elem1)] = elem.value.toString();
             let temp = this.nodes_positions[this.nodes.indexOf(elem1)];
             console.log(temp)
             for (let place of this.nodes_positions){
