@@ -18,9 +18,9 @@ export class MapComponent implements OnInit, OnDestroy {
   dim_y = 50 // number of cells in the y axis
   x_idxs = Array.from(Array(this.dim_x).keys())//This is needed only for using angular directives in generating map
   y_idxs = Array.from(Array(this.dim_y).keys())//This is needed only for using angular directives in generating map
-  nodes = ["0xb1", "0xb2", "0xb8", "0xb9"]
-  sensor_values = ["", "", "", ""]
-  nodes_positions = ["[13, 4]", "[13, 19]", "[40, 4]", "[40, 4]"]
+  nodes = ["0xb1", "0xb2", "0xb8", "0xb9"] // Array containing the unicast address of the nodes
+  sensor_values = ["", "", "", ""] // Array containing telemetry values, please insert an empty entry for each address in the nodes array 
+  nodes_positions = ["[13, 4]", "[13, 19]", "[40, 4]", "[40, 4]"]// positions shown in the map, one for each entry in nodes array
   tracked_positions:any[] = [] //This array will contain the positions on the map for the tracked devices
   tracked_devices:any[] = [] //This array will contain tracked devices
   is_found = false
@@ -47,6 +47,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.WebsocketService.closeWebSocket();
   }
 
+  // The following function calculates the position based on the received distances and on the positions of the nodes
   calculate_position(x_1: number, x_2: number, x_3: number, y_1:number, y_2:number, y_3:number, r_1:number, r_2:number, r_3:number ){
 
     var alpha = -2*x_1 + 2*x_2;
@@ -59,6 +60,7 @@ export class MapComponent implements OnInit, OnDestroy {
     return [((gamma * epsilon) - (zeta * beta))/((epsilon * alpha) - (beta * delta)), ((gamma * delta) - (alpha * zeta))/((beta * delta) - (alpha * epsilon))];
   }
 
+  //The following function will find the three nearest nodes
   find_nearest_nodes(){
 
     var result: any[]= [];
@@ -151,7 +153,6 @@ export class MapComponent implements OnInit, OnDestroy {
       elem[1][2].rssi
       );
 
-      //this.tracked_devices.push(elem.address);
       if(position[0] < 0 ){
         position[0] = 0
       }

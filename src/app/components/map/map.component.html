@@ -31,8 +31,7 @@
     <p *ngIf="last_overall !== 0">Last message received: {{last_overall | date: 'short'}}</p>
     <p *ngIf="last_node_msg_dates.length >= 1">Last location message: {{last_node_msg_dates[0] | date: 'short'}}</p>
     <p *ngIf="last_sensor_msg_dates.length >= 1">Last telemetry message: {{last_sensor_msg_dates[0] | date: 'short'}}</p>
-    <p *ngIf="last_node_msg_dates.length >= 5">Average location message time required: {{avgTimeCount(last_node_msg_dates.slice(0,5))}}</p>
-    <p *ngIf="last_sensor_msg_dates.length >= 5">Average telemetry message time required: {{avgTimeCount(last_sensor_msg_dates.slice(0,5))}}</p>
-    <p>{{tracked_devices}}</p>
-    <p>{{tracked_positions}}</p>
+    <p *ngIf="last_node_msg_dates.length >= 5">Average location message time required: {{avgTimeCount(last_node_msg_dates.slice(0,5))}}s</p>
+    <p *ngIf="last_sensor_msg_dates.length >= 5">Average telemetry message time required: {{avgTimeCount(last_sensor_msg_dates.slice(0,5))}}s</p>
+
 </div>
